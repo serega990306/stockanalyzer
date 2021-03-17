@@ -2,4 +2,5 @@
 
 /core/migrations
 /stock/migrations
+/technical/migrations
 
