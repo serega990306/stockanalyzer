@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import UserProfile
+from user_profile.models import UserProfile
 
 
 class Sector(models.Model):
@@ -13,8 +13,9 @@ class Sector(models.Model):
 
 
 class Stock(models.Model):
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, related_name='stocks')
     company = models.CharField(max_length=30, blank=True, null=True)
+    country = models.CharField(max_length=3, blank=True, null=True)
     ticket = models.CharField(max_length=5, blank=True, null=True)
     open_price = models.DecimalField(max_digits=10, decimal_places=2)
     current_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -37,6 +38,10 @@ class Strategy(models.Model):
     user_profile = models.ManyToManyField(UserProfile)
     stock = models.ManyToManyField(Stock)
     date_created = models.DateField(auto_now_add=True)
+    public = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
 
 
 class StockGroup(models.Model):

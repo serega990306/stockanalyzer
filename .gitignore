@@ -3,4 +3,5 @@
 /core/migrations
 /stock/migrations
 /technical/migrations
+/user_profile/migrations
 

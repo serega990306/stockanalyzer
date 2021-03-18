@@ -9,11 +9,25 @@ class SectorSerializer(serializers.ModelSerializer):
 
 
 class StockSerializer(serializers.ModelSerializer):
-    # sector_name = serializers.CharField(source='sector.name', read_only=True)
 
     class Meta:
         model = Stock
         fields = '__all__'
+
+
+class StockMiniSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Stock
+        fields = ['id', 'ticket', 'company']
+
+
+class SectorStockSerializer(serializers.ModelSerializer):
+    stocks = StockMiniSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Sector
+        fields = ['id', 'name', 'stocks']
 
 
 class StockHistorySerializer(serializers.ModelSerializer):
@@ -21,3 +35,4 @@ class StockHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = StockHistory
         fields = '__all__'
+
