@@ -1,7 +1,8 @@
 from rest_framework import mixins, viewsets
+from rest_framework.viewsets import ModelViewSet
+
 from .models import Sector, Stock, StockHistory
 from .serializers import SectorSerializer, StockSerializer, StockHistorySerializer, SectorStockSerializer
-from rest_framework.viewsets import ModelViewSet
 
 
 class SectorView(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):

@@ -1,5 +1,3 @@
-from abc import ABC
-
 from django.contrib.auth.models import User, update_last_login
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
@@ -67,9 +65,3 @@ class LoginSerializer(serializers.Serializer):
         return {
             'email': user.email
         }
-
-    """
-    user = authenticate(username=username, password=password)
-    if user is None:
-        raise serializers.ValidationError({"error": "Username or password is not correct"})
-    """

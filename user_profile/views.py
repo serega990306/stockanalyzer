@@ -1,7 +1,9 @@
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ModelViewSet, ViewSet
-from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ViewSet
+from rest_framework.response import Response
+
 from .models import UserProfile
 from .serializers import UserProfileSerializer
 
