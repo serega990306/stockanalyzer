@@ -1,7 +1,11 @@
-from rest_framework import serializers
-from django.contrib.auth.models import User
-from rest_framework.validators import UniqueValidator
+from abc import ABC
+
+from django.contrib.auth.models import User, update_last_login
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate
+
+from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -41,10 +45,31 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-class LoginSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(
-        required=True,
-        validators=[UniqueValidator(queryset=User.objects.all())]
-    )
+class LoginSerializer(serializers.Serializer):
+    # email = serializers.EmailField(required=True)
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(write_only=True, required=True)
 
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    def validate(self, data):
+        username = data.get("username", None)
+        password = data.get("password", None)
+        user = authenticate(username=username, password=password)
+        if user is None:
+            raise serializers.ValidationError(
+                'A user with this email and password is not found.'
+            )
+        try:
+            update_last_login(None, user)
+        except User.DoesNotExist:
+            raise serializers.ValidationError(
+                'User with given email and password does not exists'
+            )
+        return {
+            'email': user.email
+        }
+
+    """
+    user = authenticate(username=username, password=password)
+    if user is None:
+        raise serializers.ValidationError({"error": "Username or password is not correct"})
+    """

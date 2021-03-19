@@ -1,5 +1,5 @@
 from django.db import models
-from user_profile.models import UserProfile
+from django.contrib.auth.models import User
 
 
 class Sector(models.Model):
@@ -35,7 +35,7 @@ class Stock(models.Model):
 
 class Strategy(models.Model):
     name = models.CharField(max_length=30, blank=True, null=True)
-    user_profile = models.ManyToManyField(UserProfile)
+    user_profile = models.ManyToManyField(User)
     stock = models.ManyToManyField(Stock)
     date_created = models.DateField(auto_now_add=True)
     public = models.BooleanField(default=False)
@@ -46,7 +46,7 @@ class Strategy(models.Model):
 
 class StockGroup(models.Model):
     name = models.CharField(max_length=30, blank=True, null=True)
-    user_profile = models.ManyToManyField(UserProfile)
+    user_profile = models.ManyToManyField(User)
     stock = models.ManyToManyField(Stock)
     date_created = models.DateField(auto_now_add=True)
     status = models.BooleanField(default=True)
